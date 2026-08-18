@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Capstone | Archetype Clustering</title>
+    <style>
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+        h1 { color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        h2 { color: #90caf9; margin-top: 30px; }
+        p, li { font-size: 16px; color: #b0bec5; }
+        a { color: #64b5f6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .credit { font-size: 14px; font-style: italic; color: #757575; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Structured Content Archetype Clustering: Moving Beyond Heuristics</h1>
+        <p class="credit">Built on the FlyRank ML Internship dataset (<a href="https://flyrank.ai" target="_blank">https://flyrank.ai</a>).</p>
+        
+        <h2>1. Abstract</h2>
+        <p>This project identifies performance archetypes across a large-scale content inventory to improve editorial prioritization. A rigid heuristic rule was initially built to flag "Stale Visible Pages," but it struggled to differentiate between stable evergreen content and genuinely decaying pages, performing worse than random guessing (Precision@50: 0.320 vs Base Rate: 0.511). To solve this, an unsupervised K-Means clustering model was developed on an 80/20 client-grouped split to group pages by multi-dimensional behavioral patterns. By calculating proximity to an identified "At-Risk/Declining" cluster centroid, the model successfully outperformed the baseline, achieving a Precision@50 of 0.520. This proves that mathematical clustering provides a safer, more accurate queue for content reviews than simple SQL-style thresholds.</p>
+        
+        <h2>2. Introduction / Problem Statement</h2>
+        <p>When prioritizing content for updates, simple rules (e.g., "rewrite if older than 180 days and impressions > 500") are often too rigid. They cannot distinguish between a page that is organically decaying and a static utility page (like a Privacy Policy) that naturally receives high traffic but never needs a rewrite. This project replaces arbitrary human thresholds with unsupervised machine learning to discover organic, mathematically backed performance patterns.</p>
+        
+        <h2>3. Data</h2>
+        <p>This analysis uses the FlyRank/internship-warehouse release (v20260703). The grain is a single pseudonymized content item's aggregated metrics for the mid-panel month of March 2026 (month=2026-03). I utilized fact_content_daily_performance joined with dim_content. I deliberately excluded raw text and product-derived context flags (like health_score) to avoid circular results and ensure the model discovered signals strictly from observed search behavior.</p>
+        
+        <h2>4. Methodology</h2>
+        <ul>
+            <li><strong>Baseline:</strong> A multiplicative score penalizing pages that were stale (180+ days), highly visible (500+ impressions), and slipping in position.</li>
+            <li><strong>Model:</strong> K-Means clustering (k=4).</li>
+            <li><strong>Validation:</strong> An 80/20 Grouped Train/Test Split on client_id was used to ensure the model learned universal patterns rather than memorizing a specific client's website structure. Missing ranks were handled by median imputation.</li>
+        </ul>
+        
+        <h2>5. Results</h2>
+        <p>Evaluated on the 20% test split at K=50:</p>
+        <ul>
+            <li>Base Rate (Random Picking): 0.511</li>
+            <li>Baseline Rule Precision@50: 0.320</li>
+            <li>K-Means Model Precision@50: 0.520</li>
+        </ul>
+        
+        <h2>6. Limitations & Honest Framing</h2>
+        <p>This is a decision-support tool based on observed correlations, not causal proof. A known limitation is our "semantic blind spot." Because the data contract excludes raw text, we cluster pages that behave the exact same way, but we cannot mathematically confirm if they cover the same exact topic. The model also occasionally misclassifies high-traffic "Evergreen" pages as "At-Risk" due to the heavy weight of raw impression volume.</p>
+        
+        <h2>7. Ranked Recommendations</h2>
+        <p>The final output is a ranked CSV queue. Pages closest to the "At-Risk" centroid are surfaced for editorial review, specifically targeting metadata rewrites or content expansion.</p>
+        
+        <h2>8. Reproducibility</h2>
+        <p>All code, queries, and execution environments are fully reproducible. The notebooks and data contracts are hosted in the project repository under <code>work/notebooks/</code>.</p>
+    </div>
+</body>
+</html>
