@@ -74,7 +74,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ML Capstone | Archetype Clustering</title>
     <style>
-        body { background-color: #121212; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
+        body { background-color: #121212; color: #e0e0e0; font-family: marcellus, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
         .container { max-width: 800px; margin: 40px auto; padding: 20px; }
         h1 { color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px; }
         h2 { color: #90caf9; margin-top: 30px; }
@@ -88,11 +88,11 @@
     <div class="container">
         <h1>Structured Content Archetype Clustering: Moving Beyond Heuristics</h1>
         
-        <h2>1. Abstract</h2>
-        <p>This project identifies performance archetypes across a search inventory to improve editorial prioritization. Initially, a rigid heuristic was built to flag "Stale Visible Pages," but it struggled with nuance. To improve this, an unsupervised K-Means clustering model was developed to group pages by multi-dimensional behavioral patterns. However, strict client-grouped validation revealed severe generalization limits: while a naive random split yielded a 0.700 Precision@50, isolating unseen domains dropped precision to 0.220 (below the 0.440 base rate). This highlights that structural SEO metrics heavily overfit to specific domain architectures, proving that cross-domain content scoring requires semantic context, not just behavioral telemetry.</p>
+       <h2>1. Abstract</h2>
+        <p>How can editorial teams efficiently prioritize content updates across millions of URLs without relying on arbitrary, rigid rules? Using an anonymized 79-million-row search performance dataset from FlyRank, this project evaluated structural and behavioral metrics to identify actionable content archetypes. I developed an unsupervised K-Means clustering model (k=4) and validated it using a strict 80/20 grouped-client holdout to prevent domain-level leakage. While a naive random split suggested high predictability (Precision@50: 0.700), testing on unseen clients crashed precision to 0.220 (below the 0.440 base rate), revealing that structural SEO metrics heavily overfit to specific domain architectures. This demonstrates that while behavioral clustering is a powerful triage engine within a known domain, cross-domain automated content decisions require semantic context.</p>
         
         <h2>2. Introduction / Problem Statement</h2>
-        <p>When prioritizing content for updates, simple rules are often too rigid. They cannot distinguish between a page that is organically decaying and a static utility page that naturally receives high traffic. This project replaces arbitrary human thresholds with machine learning to discover mathematically backed performance patterns.</p>
+        <p>FlyRank faces a massive scale problem: prioritizing editorial updates across millions of content rows without wasting time on evergreen utility pages. For example, a simple heuristic (e.g., "rewrite if older than 180 days and impressions > 500") might accurately flag a decaying blog post, but it will also flag a stable "Privacy Policy" or "Contact Us" page that naturally gets traffic and age but never needs a rewrite. This project replaces these arbitrary human thresholds with unsupervised machine learning to discover organic, mathematically backed performance patterns, aiming to solve the exact triage bottleneck content teams face daily.</p>
         
         <h2>3. Data</h2>
         <p>This analysis uses the FlyRank/internship-warehouse release (v20260703). The grain is a single pseudonymized content item's aggregated metrics for the mid-panel month of March 2026. I deliberately excluded raw text and product-derived context flags to avoid circular logic and maintain public safety.</p>
