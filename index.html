@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -63,6 +63,59 @@
         
         <h2>8. Reproducibility</h2>
         <p>All code, queries, and execution environments are fully reproducible. The notebooks and data contracts are hosted in the project repository under <code>work/notebooks/</code>.</p>
+    </div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ML Capstone | Archetype Clustering</title>
+    <style>
+        body { background-color: #121212; color: #e0e0e0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 40px auto; padding: 20px; }
+        h1 { color: #ffffff; border-bottom: 1px solid #333; padding-bottom: 10px; }
+        h2 { color: #90caf9; margin-top: 30px; }
+        p, li { font-size: 16px; color: #b0bec5; }
+        a { color: #64b5f6; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .credit { font-size: 14px; font-style: italic; color: #757575; text-align: center; margin-top: 50px; border-top: 1px solid #333; padding-top: 20px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Structured Content Archetype Clustering: Moving Beyond Heuristics</h1>
+        
+        <h2>1. Abstract</h2>
+        <p>This project identifies performance archetypes across a search inventory to improve editorial prioritization. Initially, a rigid heuristic was built to flag "Stale Visible Pages," but it struggled with nuance. To improve this, an unsupervised K-Means clustering model was developed to group pages by multi-dimensional behavioral patterns. However, strict client-grouped validation revealed severe generalization limits: while a naive random split yielded a 0.700 Precision@50, isolating unseen domains dropped precision to 0.220 (below the 0.440 base rate). This highlights that structural SEO metrics heavily overfit to specific domain architectures, proving that cross-domain content scoring requires semantic context, not just behavioral telemetry.</p>
+        
+        <h2>2. Introduction / Problem Statement</h2>
+        <p>When prioritizing content for updates, simple rules are often too rigid. They cannot distinguish between a page that is organically decaying and a static utility page that naturally receives high traffic. This project replaces arbitrary human thresholds with machine learning to discover mathematically backed performance patterns.</p>
+        
+        <h2>3. Data</h2>
+        <p>This analysis uses the FlyRank/internship-warehouse release (v20260703). The grain is a single pseudonymized content item's aggregated metrics for the mid-panel month of March 2026. I deliberately excluded raw text and product-derived context flags to avoid circular logic and maintain public safety.</p>
+        
+        <h2>4. Methodology</h2>
+        <ul>
+            <li><strong>Model:</strong> K-Means clustering (k=4) applied to scaled numerical features.</li>
+            <li><strong>Validation:</strong> An 80/20 Grouped Train/Test Split on client_id was strictly enforced to prevent client-overlap leakage.</li>
+        </ul>
+        
+        <h2>5. Results</h2>
+        <p>Evaluated on the 20% strict client-holdout split at K=50:</p>
+        <ul>
+            <li>Base Rate (Random Picking): 0.440</li>
+            <li>K-Means Model Precision@50: 0.220</li>
+            <li>Naive Split Precision@50 (The Leakage Trap): 0.700</li>
+        </ul>
+        <p>The model experienced a massive precision collapse when tested on completely unseen clients. Structural clustering successfully identifies decaying pages within a known domain, but struggles to generalize without topical context.</p>
+        
+        <h2>6. Limitations & Honest Framing</h2>
+        <p>This is a directional, decision-support tool, not causal proof of Google's algorithm. A known limitation is our "semantic blind spot." By excluding raw text, the model groups pages that behave similarly but cannot verify if they cover similar intents.</p>
+        
+        <p class="credit">Acknowledgments & Data Credit: Built on the FlyRank ML Internship dataset (<a href="https://flyrank.ai" target="_blank">https://flyrank.ai</a>).</p>
     </div>
 </body>
 </html>
